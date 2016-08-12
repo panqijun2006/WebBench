@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
    case 't': benchtime=atoi(optarg);break;	     
    case 'p': 
 	     /* proxy server parsing server:port */
-	     tmp=strrchr(optarg,':');
+	     tmp=strrchr(optarg,':'); /* get the string before ':' */
 	     proxyhost=optarg;
 	     if(tmp==NULL)
 	     {
@@ -157,8 +157,8 @@ int main(int argc, char *argv[])
                     }
 
  if(clients==0) clients=1;
- if(benchtime==0) benchtime=60;
- /* Copyright */
+ if(benchtime==0) benchtime=60;  /* 60 second by default */
+ /* print Copyright information*/
  fprintf(stderr,"Webbench - Simple Web Benchmark "PROGRAM_VERSION"\n"
 	 "Copyright (c) Radim Kolar 1997-2004, GPL Open Source Software.\n"
 	 );
@@ -431,12 +431,12 @@ void benchcore(const char *host,const int port,const char *req)
             /* read all available data from socket */
 	    while(1)
 	    {
-              if(timerexpired) break; 
+              if(timerexpired) break; /* alarm timeout and break */
 	      i=read(s,buf,1500);
               /* fprintf(stderr,"%d\n",i); */
 	      if(i<0) 
               { 
-                 failed++;
+                 failed++;           /* noneed lock */
                  close(s);
                  goto nexttry;
               }
